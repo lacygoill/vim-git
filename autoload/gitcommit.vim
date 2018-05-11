@@ -43,11 +43,18 @@ fu! gitcommit#read_last_message() abort "{{{1
     endif
 endfu
 
-fu! gitcommit#save_next_message() abort "{{{1
-    augroup my_commit_msg_save
-        au! * <buffer>
-        au BufWinLeave <buffer> keepj keepp 1;/^# Please enter the commit message/-2w! $XDG_RUNTIME_VIM/last_commit_message
-        \ |                     exe 'au! my_commit_msg_save'
-        \ |                     exe 'aug! my_commit_msg_save'
-    augroup END
+fu! gitcommit#save_next_message(when) abort "{{{1
+    if a:when is# 'on_bufwinleave'
+        augroup my_commit_msg_save
+            au! * <buffer>
+            au BufWinLeave <buffer> call gitcommit#save_next_message('now')
+        augroup END
+    else
+        let pat = '^# Please enter the commit message'
+        if search(pat)
+            exe 'keepj keepp 1;/'.pat.'/-2w! $XDG_RUNTIME_VIM/last_commit_message'
+        endif
+        au! my_commit_msg_save
+        aug! my_commit_msg_save
+    endif
 endfu

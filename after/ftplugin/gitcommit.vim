@@ -2,7 +2,7 @@ if fnamemodify(expand('%:p'), ':t') is# 'COMMIT_EDITMSG'
     if empty(getline(1))
         call gitcommit#read_last_message()
     endif
-    call gitcommit#save_next_message()
+    call gitcommit#save_next_message('on_bufwinleave')
 endif
 
 " Options {{{1

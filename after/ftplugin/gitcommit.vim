@@ -13,6 +13,12 @@ setl cc=+1
 
 " Mappings {{{1
 
+" If you need to customize some fugitive mappings, according to tpope,
+" you need to listen to `FileType gitcommit` and check `&modifiable`.
+"
+" Source:
+"     https://github.com/tpope/vim-fugitive/issues/1076#issuecomment-412255667
+
 " Why?{{{
 "
 " To save a buffer, we use a mapping like this:
@@ -38,45 +44,12 @@ setl cc=+1
 "}}}
 nno  <buffer><nowait><silent>  <c-s>  :<c-u>update<cr>
 
-" What does `-` do in a gitcommit buffer?{{{
-"
-" `fugitive` installs  a buffer-local mapping  using the  lhs `-` in  the window
-" opened by  `:Gstatus`. Its purpose  is to  stage or unstage  the files  in the
-" current git repo.
-"}}}
-" Does it work anywhere?{{{
-"
-" No. Only when you're on the line:
-"
-"     # Changes not staged for commit:
-" or:
-"     # Changes to be committed:
-"}}}
-" Why remapping it?{{{
-"
-" Unfortunately, it wasn't given the `<nowait>` argument, so it suffers
-" from a timeout because of our `--` (open file explorer) mapping.
-"
-" We need to remap it, but it seems tricky.
-" We can't listen to FileType because the mapping is not installed yet,
-" so `maparg(…)` is empty.
-"}}}
-call timer_start(0, {-> gitcommit#backtick_minus()})
-" Is there an alternative to the timer?{{{
-"
-" Maybe.
-" You could try and install a fire-once autocmd listening to `BufWinEnter`.
-"
-" Read this:
-"
-"     https://vi.stackexchange.com/a/8587/15612
-"}}}
-
 " Teardown {{{1
 
-let b:undo_ftplugin =         get(b:, 'undo_ftplugin', '')
-\                     .(empty(get(b:, 'undo_ftplugin', '')) ? '' : '|')
-\                     ."
-\                         setl cc<
-\                       | exe 'nunmap <buffer> <c-s>'
-\                      "
+let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
+    \ .(empty(get(b:, 'undo_ftplugin', '')) ? '' : '|')
+    \ ."
+    \   setl cc<
+    \ | exe 'nunmap <buffer> <c-s>'
+    \ "
+

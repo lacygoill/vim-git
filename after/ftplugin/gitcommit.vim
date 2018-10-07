@@ -1,3 +1,8 @@
+let $COMMIT_MESSAGES_DIR = $HOME.'/.vim/tmp/commit_messages'
+if !isdirectory($COMMIT_MESSAGES_DIR)
+    call mkdir($COMMIT_MESSAGES_DIR, 'p', 0700)
+endif
+
 if fnamemodify(expand('%:p'), ':t') is# 'COMMIT_EDITMSG'
     if empty(getline(1))
         call gitcommit#read_last_message()
@@ -44,12 +49,29 @@ setl cc=+1
 "}}}
 nno  <buffer><nowait><silent>  <c-s>  :<c-u>update<cr>
 
+nno  <buffer><nowait><silent>  [m  :<c-u>call gitcommit#read_last_message(-1)<cr>
+nno  <buffer><nowait><silent>  ]m  :<c-u>call gitcommit#read_last_message(+1)<cr>
+
+if stridx(&rtp, 'vim-lg-lib') >= 0
+    call lg#motion#repeatable#make#all({
+        \ 'mode': '',
+        \ 'buffer': 1,
+        \ 'axis': {'bwd': ',', 'fwd': ';'},
+        \ 'from': expand('<sfile>:p').':'.expand('<slnum>'),
+        \ 'motions': [
+        \     {'bwd': '[m',  'fwd': ']m'},
+        \ ]})
+endif
+
 " Teardown {{{1
 
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
     \ .(empty(get(b:, 'undo_ftplugin', '')) ? '' : '|')
     \ ."
     \   setl cc<
+    \ | unlet! b:msg_index
     \ | exe 'nunmap <buffer> <c-s>'
+    \ | exe 'nunmap <buffer> [m'
+    \ | exe 'nunmap <buffer> ]m'
     \ "
 

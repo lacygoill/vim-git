@@ -19,7 +19,7 @@ fu! gitcommit#read_last_message(...) abort "{{{2
     if filereadable(msg)
         sil! exe '1;/^'.s:PAT.'/-d_'
         exe '0r '.msg
-        call append(line("']"), '')
+        call append("']", '')
         " need to write,  otherwise if we just execute `:x`,  git doesn't commit
         " because, for some reason, it thinks we didn't write anything
         w

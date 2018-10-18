@@ -70,7 +70,7 @@ endfu
 
 " Utility {{{1
 fu! s:get_md5(msg) abort "{{{2
-    let md5 = system('md5sum <<< '.string(join(a:msg, "\n")))
+    sil let md5 = system('md5sum <<< '.string(join(a:msg, "\n")))
     let md5 = matchstr(md5, '[a-f0-9]*')
     return md5
 endfu

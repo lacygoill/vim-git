@@ -1,8 +1,3 @@
-let $COMMIT_MESSAGES_DIR = $HOME.'/.vim/tmp/commit_messages'
-if !isdirectory($COMMIT_MESSAGES_DIR)
-    call mkdir($COMMIT_MESSAGES_DIR, 'p', 0700)
-endif
-
 if fnamemodify(expand('%:p'), ':t') is# 'COMMIT_EDITMSG'
     if empty(getline(1))
         call gitcommit#read_last_message()

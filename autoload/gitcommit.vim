@@ -5,6 +5,7 @@ let g:autoloaded_gitcommit = 1
 
 let s:PAT = '# Please enter the commit message'
 let s:MAX_MESSAGES = 100
+let s:FMT = '%m-%d__%H-%M-%S'
 
 " Interface {{{1
 fu! gitcommit#read_last_message(...) abort "{{{2
@@ -38,11 +39,22 @@ fu! gitcommit#save_next_message(when) abort "{{{2
             let msg = getline(1, last_line)
             let md5 = s:get_md5(msg)
             let checksum_file = $COMMIT_MESSAGES_DIR.'/checksums'
-            "  ┌ there's no checksums file{{{
-            "  │                               ┌ there's already a file storing this message
-            "  │                               │}}}
-            if !filereadable(checksum_file) || match(readfile(checksum_file), md5) == -1
+            let idx = match(readfile(checksum_file), md5)
+            " save the message in a file if it has never been saved
+            if !filereadable(checksum_file) || idx == -1
+            "  │                               │{{{
+            "  │                               └ there's already a file storing this message
+            "  └ there's no checksums file
+            "}}}
                 call s:write(msg, md5, checksum_file)
+            " if the message has already been saved, refreshing the timestamp in
+            " its filename, so  that next time I commit,  it's immediately used,
+            " and I don't have to look for it in the history
+            elseif filereadable(checksum_file) && idx != -1
+                let old_filename = matchstr(readfile(checksum_file)[idx], '\s\+\zs.*')
+                let old_filepath = $COMMIT_MESSAGES_DIR . '/' . old_filename
+                let new_filepath = $COMMIT_MESSAGES_DIR . '/' . strftime(s:FMT).'.txt'
+                call rename(old_filepath, new_filepath)
             endif
         endif
         sil! au! my_commit_msg_save * <buffer>
@@ -62,7 +74,7 @@ endfu
 fu! s:write(msg, md5, checksum_file) abort "{{{2
     " we need the seconds in the file title to avoid overwriting a message
     " if we make 2 commits in less than a minute
-    let file = $COMMIT_MESSAGES_DIR.'/'.strftime('%m-%d__%H-%M-%S').'.txt'
+    let file = $COMMIT_MESSAGES_DIR.'/'.strftime(s:FMT).'.txt'
     call writefile(a:msg, file)
     call writefile([a:md5.'  '.fnamemodify(file, ':t')],
         \ a:checksum_file, 'a')

@@ -46,6 +46,7 @@ nno  <buffer><nowait><silent>  <c-s>  :<c-u>update<cr>
 
 nno  <buffer><nowait><silent>  [m  :<c-u>call gitcommit#read_last_message(-1)<cr>
 nno  <buffer><nowait><silent>  ]m  :<c-u>call gitcommit#read_last_message(+1)<cr>
+nno  <buffer><nowait><silent>  dm  :<c-u>call gitcommit#delete_current_message()<cr>
 
 if stridx(&rtp, 'vim-lg-lib') >= 0
     call lg#motion#repeatable#make#all({
@@ -68,5 +69,6 @@ let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
     \ | exe 'nunmap <buffer> <c-s>'
     \ | exe 'nunmap <buffer> [m'
     \ | exe 'nunmap <buffer> ]m'
+    \ | exe 'nunmap <buffer> dm'
     \ "
 

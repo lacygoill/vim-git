@@ -63,11 +63,13 @@ endif
 
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', '')
     \ . (empty(get(b:, 'undo_ftplugin', '')) ? '' : '|')
-    \ . 'setl cc<'
-    \ . '| unlet! b:msg_index'
+    \ . "
+    \ setl cc<
+    \|unlet! b:msg_index
     \
-    \ . '| nunmap <buffer> <c-s>'
-    \ . '| nunmap <buffer> [m'
-    \ . '| nunmap <buffer> ]m'
-    \ . '| nunmap <buffer> dm'
+    \|nunmap <buffer> <c-s>
+    \|nunmap <buffer> [m
+    \|nunmap <buffer> ]m
+    \|nunmap <buffer> dm
+    \"
 

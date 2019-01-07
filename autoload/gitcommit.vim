@@ -5,7 +5,7 @@ let g:autoloaded_gitcommit = 1
 
 let s:PAT = '# Please enter the commit message'
 let s:MAX_MESSAGES = 100
-let s:FMT = '%m-%d__%H-%M-%S'
+let s:FMT = '%Y-%m-%d__%H-%M-%S'
 let s:CHECKSUM_FILE = $COMMIT_MESSAGES_DIR.'/checksums'
 
 " Interface {{{1

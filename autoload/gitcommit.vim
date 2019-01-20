@@ -55,6 +55,14 @@ fu! gitcommit#save_next_message(when) abort "{{{2
             au BufWinLeave <buffer> call gitcommit#save_next_message('now')
         augroup END
     else
+        " Leave this statement at the very beginning.{{{
+        "
+        " If an error occurred in the function,  because of `abort`, the rest of the
+        " statements would not be processed.
+        " We want our autocmd to be cleared no matter what.
+        "}}}
+        sil! au! my_commit_msg_save * <buffer>
+
         let last_line = search('^.*\S.*\%(\s*\n\)*'.s:PAT)
         if last_line
             let msg = getline(1, last_line)
@@ -75,7 +83,6 @@ fu! gitcommit#save_next_message(when) abort "{{{2
                 call s:update_checksum_file(idx, md5, new_filepath)
             endif
         endif
-        sil! au! my_commit_msg_save * <buffer>
         call s:maybe_remove_oldest()
     endif
 endfu

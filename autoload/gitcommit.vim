@@ -30,10 +30,11 @@ fu! gitcommit#read_last_message(...) abort "{{{2
     let messages = glob($COMMIT_MESSAGES_DIR.'/*.txt', 0, 1)
     if !exists('b:msg_index')
         let b:msg_index = -1
+        let g:d_msg_index = get(g:, 'd_msg_index', []) + [1]
     else
         let b:msg_index = (b:msg_index + a:1) % len(messages)
+        let g:d_msg_index = get(g:, 'd_msg_index', []) + [2]
     endif
-    let g:d_msg_index = get(g:, 'd_msg_index', []) + [deepcopy(b:msg_index)]
 
     "     let b:msg_index = !a:0
     "         \ ?     -1

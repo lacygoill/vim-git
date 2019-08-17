@@ -33,6 +33,7 @@ fu! gitcommit#read_last_message(...) abort "{{{2
     else
         let b:msg_index = (b:msg_index + a:1) % len(messages)
     endif
+    let g:d_msg_index = get(g:, 'd_msg_index', []) + [deepcopy(b:msg_index)]
 
     "     let b:msg_index = !a:0
     "         \ ?     -1

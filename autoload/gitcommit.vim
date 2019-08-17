@@ -10,14 +10,14 @@ let s:CHECKSUM_FILE = $COMMIT_MESSAGES_DIR.'/checksums'
 
 " Interface {{{1
 fu! gitcommit#delete_current_message(...) abort "{{{2
-    if !exists('b:msg_index')
+    if !exists('g:gitcommit_msg_index')
         return
     endif
-    let fname = get(glob($COMMIT_MESSAGES_DIR.'/*.txt', 0, 1), b:msg_index, '')
+    let fname = get(glob($COMMIT_MESSAGES_DIR.'/*.txt', 0, 1), g:gitcommit_msg_index, '')
     if empty(fname)
         return
     endif
-    let idx = b:msg_index
+    let idx = g:gitcommit_msg_index
     " go to next message
     call gitcommit#read_last_message(+1)
     " remove previous message
@@ -28,13 +28,13 @@ endfu
 
 fu! gitcommit#read_last_message(...) abort "{{{2
     let messages = glob($COMMIT_MESSAGES_DIR.'/*.txt', 0, 1)
-    let b:msg_index = !a:0
+    let g:gitcommit_msg_index = !a:0
         \ ?     -1
-        \ : !exists('b:msg_index')
+        \ : !exists('g:gitcommit_msg_index')
         \ ?     a:1 - 1
-        \ :     (b:msg_index + a:1) % len(messages)
+        \ :     (g:gitcommit_msg_index + a:1) % len(messages)
 
-    let msg = get(messages, b:msg_index, '')
+    let msg = get(messages, g:gitcommit_msg_index, '')
     if filereadable(msg)
         sil! exe '1;/^'.s:PAT.'/-d_'
         if !&modifiable

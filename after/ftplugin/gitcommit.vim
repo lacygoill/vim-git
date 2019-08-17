@@ -62,7 +62,6 @@ endif
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', 'exe')
     \ . "
     \ | setl cc<
-    \ | unlet! b:msg_index
     \
     \ | exe 'nunmap <buffer> <c-s>'
     \ | exe 'nunmap <buffer> [m'

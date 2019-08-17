@@ -16,8 +16,7 @@ setl cc=+1
 " If you need to customize some fugitive mappings, according to tpope,
 " you need to listen to `FileType gitcommit` and check `&modifiable`.
 "
-" Source:
-"     https://github.com/tpope/vim-fugitive/issues/1076#issuecomment-412255667
+" Source: https://github.com/tpope/vim-fugitive/issues/1076#issuecomment-412255667
 
 " Why?{{{
 "

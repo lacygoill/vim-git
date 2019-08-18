@@ -1,6 +1,6 @@
 if fnamemodify(expand('%:p'), ':t') is# 'COMMIT_EDITMSG'
     if empty(getline(1))
-        call gitcommit#read_last_message()
+        call gitcommit#read_message()
     endif
     call gitcommit#save_next_message('on_bufwinleave')
 endif
@@ -33,25 +33,25 @@ setl cc=+1
 " It reappears after we move the cursor on a different line.
 " The problem seems to come from an interaction between:
 "
-"         :silent
-"         <silent>
-"         a git commit buffer
-"         vim-gutentags ? (not sure about this one)
+"     :silent
+"     <silent>
+"     a git commit buffer
+"     vim-gutentags ? (not sure about this one)
 "
 " Solution:
 " Define a simpler buffer-local mapping which doesn't use `:silent`.
 "}}}
 nno  <buffer><nowait><silent>  <c-s>  :<c-u>update<cr>
 
-nno  <buffer><nowait><silent>  [m  :<c-u>call gitcommit#read_last_message(-1)<cr>
-nno  <buffer><nowait><silent>  ]m  :<c-u>call gitcommit#read_last_message(+1)<cr>
+nno  <buffer><nowait><silent>  [m  :<c-u>call gitcommit#read_message(-1)<cr>
+nno  <buffer><nowait><silent>  ]m  :<c-u>call gitcommit#read_message(+1)<cr>
 nno  <buffer><nowait><silent>  dm  :<c-u>call gitcommit#delete_current_message()<cr>
 
 if stridx(&rtp, 'vim-lg-lib') >= 0
     call lg#motion#repeatable#make#all({
         \ 'mode': '',
         \ 'buffer': 1,
-        \ 'from': expand('<sfile>:p').':'.expand('<slnum>'),
+        \ 'from': expand('<sfile>:p')..':'..expand('<slnum>'),
         \ 'motions': [
         \     {'bwd': '[m',  'fwd': ']m'},
         \ ]})
@@ -60,7 +60,7 @@ endif
 " Teardown {{{1
 
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', 'exe')
-    \ . "
+    \.."
     \ | setl cc<
     \
     \ | exe 'nunmap <buffer> <c-s>'

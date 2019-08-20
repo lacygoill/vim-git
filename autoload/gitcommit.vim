@@ -3,16 +3,6 @@ if exists('g:autoloaded_gitcommit')
 endif
 let g:autoloaded_gitcommit = 1
 
-let s:PAT = '# Please enter the commit message'
-let s:MAX_MESSAGES = 100
-" Isn't `%S` overkill?{{{
-"
-" No, we need the seconds in a file title to avoid overwriting a message file if
-" we commit twice in less than a minute.
-"}}}
-let s:FMT = '%Y-%m-%d__%H-%M-%S'
-let s:CHECKSUM_FILE = $COMMIT_MESSAGES_DIR..'/checksums'
-
 " Interface {{{1
 fu! gitcommit#delete_current_message(...) abort "{{{2
     if !exists('g:GITCOMMIT_LAST_MSGFILE') | return | endif
@@ -77,12 +67,7 @@ fu! gitcommit#save_next_message(when) abort "{{{2
             let msg = getline(1, last_line)
             let md5 = s:get_md5(msg)
             " save the message in a file if it has never been saved
-            if !filewritable(s:CHECKSUM_FILE) || match(readfile(s:CHECKSUM_FILE), '\m\C^'..md5..'  ') == -1
-            "  │                                 │{{{
-            "  │                                 └ there's no file currently storing this message
-            "  │
-            "  └ there's no checksums file in which we can write
-            "}}}
+            if match(readfile(s:CHECKSUM_FILE), '\m\C^'..md5..'  ') == -1
                 call s:write(msg, md5)
             endif
         endif
@@ -131,8 +116,17 @@ fu! s:create_checksum_file() abort "{{{2
         call writefile([md5..'  '..file], s:CHECKSUM_FILE, 'a')
     endfor
 endfu
+"}}}1
+" Init {{{1
 
-if !filereadable(s:CHECKSUM_FILE)
-    call s:create_checksum_file()
-endif
+let s:PAT = '# Please enter the commit message'
+let s:MAX_MESSAGES = 100
+" Isn't `%S` overkill?{{{
+"
+" No, we need the seconds in a file title to avoid overwriting a message file if
+" we commit twice in less than a minute.
+"}}}
+let s:FMT = '%Y-%m-%d__%H-%M-%S'
+let s:CHECKSUM_FILE = $COMMIT_MESSAGES_DIR..'/checksums'
+if !filereadable(s:CHECKSUM_FILE) | call s:create_checksum_file() | endif
 

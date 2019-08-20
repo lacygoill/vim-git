@@ -43,6 +43,16 @@ setl cc=+1
 "}}}
 nno  <buffer><nowait><silent>  <c-s>  :<c-u>update<cr>
 
+" TODO: It would be nice to be able to fuzzy search through old commit messages.{{{
+"
+" Pressing `]m` and `[m`  can be ok if the message is right  before or after the
+" one which is currently in the gitcommit buffer.
+" But otherwise, it can be tedious to find the desired message.
+"
+" Once you do implement the fuzzy search, maybe get rid of `]m` and `[m`.
+" This would  simplify the  code of  `gitcommit#read_message()` which  would not
+" accept an optional argument anymore.
+"}}}
 nno  <buffer><nowait><silent>  [m  :<c-u>call gitcommit#read_message(-1)<cr>
 nno  <buffer><nowait><silent>  ]m  :<c-u>call gitcommit#read_message(+1)<cr>
 nno  <buffer><nowait><silent>  dm  :<c-u>call gitcommit#delete_current_message()<cr>

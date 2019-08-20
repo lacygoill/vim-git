@@ -123,6 +123,7 @@ endfu
 " The init section needs to be at the end because it calls `s:create_checksum_file()`.
 " The function must exist.
 " The function must exist.
+" The function must exist.
 
 let s:PAT = '# Please enter the commit message'
 let s:MAX_MESSAGES = 100

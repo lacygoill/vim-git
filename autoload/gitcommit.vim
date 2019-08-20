@@ -16,10 +16,9 @@ let s:CHECKSUM_FILE = $COMMIT_MESSAGES_DIR..'/checksums'
 " Interface {{{1
 fu! gitcommit#delete_current_message(...) abort "{{{2
     if !exists('g:GITCOMMIT_LAST_MSGFILE') | return | endif
-
     let msgfiles = glob($COMMIT_MESSAGES_DIR..'/*.txt', 0, 1)
-    let idx = index(msgfiles, g:GITCOMMIT_LAST_MSGFILE)
-    if idx == -1 | return | endif
+    if index(msgfiles, g:GITCOMMIT_LAST_MSGFILE) == -1 | return | endif
+
     let fname = g:GITCOMMIT_LAST_MSGFILE
 
     " import next message file
@@ -104,10 +103,6 @@ fu! s:update_checksum_file(fname, ...) abort "{{{2
     let fname = fnamemodify(a:fname, ':t')
     let new_checksums = readfile(s:CHECKSUM_FILE)
     call filter(new_checksums, {_,v -> v !~# '\m\C  '..fname..'$'})
-    if a:0
-        let [md5, new_filepath] = a:000
-        call add(new_checksums, md5..'  '..substitute(new_filepath, '.*/', '', ''))
-    endif
     call writefile(new_checksums, s:CHECKSUM_FILE)
 endfu
 

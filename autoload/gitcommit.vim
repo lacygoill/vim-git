@@ -65,6 +65,7 @@ fu! gitcommit#save_next_message(when) abort "{{{2
         let last_line = search('^.*\S.*\%(\s*\n\)*'..s:PAT)
         if last_line
             let msg = getline(1, last_line)
+            let g:d_msg = deepcopy(msg)
             let md5 = s:get_md5(msg)
             " save the message in a file if it has never been saved
             if match(readfile(s:CHECKSUM_FILE), '\m\C^'..md5..'  ') == -1

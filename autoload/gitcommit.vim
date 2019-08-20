@@ -49,7 +49,6 @@ endfu
 
 fu! gitcommit#save_next_message(when) abort "{{{2
     if a:when is# 'on_bufwinleave'
-
         augroup my_commit_msg_save
             au! * <buffer>
             au BufWinLeave <buffer> call gitcommit#save_next_message('now')

@@ -128,6 +128,7 @@ endfu
 " The function must exist.
 " The function must exist.
 " The function must exist.
+" The function must exist.
 
 let s:PAT = '# Please enter the commit message'
 let s:MAX_MESSAGES = 100

@@ -63,7 +63,7 @@ fu! gitcommit#save_next_message(when) abort "{{{2
         sil! au! my_commit_msg_save * <buffer>
 
         let g:d_pat = '^.*\S.*\%(\s*\n\)*'..s:PAT
-        let last_line = search('^.*\S.*\%(\s*\n\)*'..s:PAT)
+        let last_line = search('^.*\S.*\%(\s*\n\)*'..s:PAT, 'nW')
         let g:d_last_line = deepcopy(last_line)
         if last_line
             let msg = getline(1, last_line)
@@ -123,6 +123,7 @@ endfu
 " Init {{{1
 
 " The init section needs to be at the end because it calls `s:create_checksum_file()`.
+" The function must exist.
 " The function must exist.
 " The function must exist.
 " The function must exist.

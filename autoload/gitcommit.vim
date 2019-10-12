@@ -4,7 +4,7 @@ endif
 let g:autoloaded_gitcommit = 1
 
 " Interface {{{1
-fu! gitcommit#delete_current_message(...) abort "{{{2
+fu gitcommit#delete_current_message(...) abort "{{{2
     if !exists('g:GITCOMMIT_LAST_MSGFILE') | return | endif
     let msgfiles = glob($COMMIT_MESSAGES_DIR..'/*.txt', 0, 1)
     if index(msgfiles, g:GITCOMMIT_LAST_MSGFILE) == -1 | return | endif
@@ -20,7 +20,7 @@ fu! gitcommit#delete_current_message(...) abort "{{{2
     call s:update_checksum_file(fname)
 endfu
 
-fu! gitcommit#read_message(...) abort "{{{2
+fu gitcommit#read_message(...) abort "{{{2
     let msgfiles = glob($COMMIT_MESSAGES_DIR..'/*.txt', 0, 1)
     if empty(msgfiles) | return | endif
 
@@ -47,7 +47,7 @@ fu! gitcommit#read_message(...) abort "{{{2
     endif
 endfu
 
-fu! gitcommit#save_next_message(when) abort "{{{2
+fu gitcommit#save_next_message(when) abort "{{{2
     if a:when is# 'on_bufwinleave'
         augroup my_commit_msg_save
             au! * <buffer>
@@ -77,7 +77,7 @@ fu! gitcommit#save_next_message(when) abort "{{{2
 endfu
 " }}}1
 " Core {{{1
-fu! s:maybe_remove_oldest_msgfile() abort "{{{2
+fu s:maybe_remove_oldest_msgfile() abort "{{{2
     let msgfiles = glob($COMMIT_MESSAGES_DIR..'/*.txt', 0, 1)
     if len(msgfiles) > s:MAX_MESSAGES
         let oldest = msgfiles[0]
@@ -85,14 +85,14 @@ fu! s:maybe_remove_oldest_msgfile() abort "{{{2
     endif
 endfu
 
-fu! s:update_checksum_file(fname, ...) abort "{{{2
+fu s:update_checksum_file(fname, ...) abort "{{{2
     let fname = fnamemodify(a:fname, ':t')
     let new_checksums = readfile(s:CHECKSUM_FILE)
     call filter(new_checksums, {_,v -> v !~# '\m\C  '..fname..'$'})
     call writefile(new_checksums, s:CHECKSUM_FILE)
 endfu
 
-fu! s:write(msg, md5) abort "{{{2
+fu s:write(msg, md5) abort "{{{2
     " generate filename with current time and date
     let file = $COMMIT_MESSAGES_DIR..'/'..strftime(s:FMT)..'.txt'
     " save message in a file
@@ -103,13 +103,13 @@ fu! s:write(msg, md5) abort "{{{2
 endfu
 " }}}1
 " Utilities {{{1
-fu! s:get_md5(msg) abort "{{{2
+fu s:get_md5(msg) abort "{{{2
     sil let md5 = system('md5sum <<< '..string(join(a:msg, "\n")))
     let md5 = matchstr(md5, '[a-f0-9]*')
     return md5
 endfu
 
-fu! s:create_checksum_file() abort "{{{2
+fu s:create_checksum_file() abort "{{{2
     for file in glob($COMMIT_MESSAGES_DIR..'/*.txt', 0, 1)
         let msg = readfile(file)
         let md5 = s:get_md5(msg)
@@ -123,14 +123,14 @@ endfu
 " The init section needs to be at the end because it calls `s:create_checksum_file()`.
 " The function must exist.
 
-let s:PAT = '# Please enter the commit message'
-let s:MAX_MESSAGES = 100
+const s:PAT = '# Please enter the commit message'
+const s:MAX_MESSAGES = 100
 " Isn't `%S` overkill?{{{
 "
 " No, we need the seconds in a file title to avoid overwriting a message file if
 " we commit twice in less than a minute.
 "}}}
-let s:FMT = '%Y-%m-%d__%H-%M-%S'
-let s:CHECKSUM_FILE = $COMMIT_MESSAGES_DIR..'/checksums'
+const s:FMT = '%Y-%m-%d__%H-%M-%S'
+const s:CHECKSUM_FILE = $COMMIT_MESSAGES_DIR..'/checksums'
 if !filereadable(s:CHECKSUM_FILE) | call s:create_checksum_file() | endif
 

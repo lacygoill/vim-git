@@ -41,7 +41,7 @@ setl cc=+1
 " Solution:
 " Define a simpler buffer-local mapping which doesn't use `:silent`.
 "}}}
-nno  <buffer><nowait><silent>  <c-s>  :<c-u>update<cr>
+nno <buffer><nowait><silent> <c-s> :<c-u>update<cr>
 
 " TODO: It would be nice to be able to fuzzy search through old commit messages.{{{
 "
@@ -53,9 +53,9 @@ nno  <buffer><nowait><silent>  <c-s>  :<c-u>update<cr>
 " This would  simplify the  code of  `gitcommit#read_message()` which  would not
 " accept an optional argument anymore.
 "}}}
-nno  <buffer><nowait><silent>  [m  :<c-u>call gitcommit#read_message(-1)<cr>
-nno  <buffer><nowait><silent>  ]m  :<c-u>call gitcommit#read_message(+1)<cr>
-nno  <buffer><nowait><silent>  dm  :<c-u>call gitcommit#delete_current_message()<cr>
+nno <buffer><nowait><silent> [m :<c-u>call gitcommit#read_message(-1)<cr>
+nno <buffer><nowait><silent> ]m :<c-u>call gitcommit#read_message(+1)<cr>
+nno <buffer><nowait><silent> dm :<c-u>call gitcommit#delete_current_message()<cr>
 
 if stridx(&rtp, 'vim-lg-lib') >= 0
     call lg#motion#repeatable#make#all({
@@ -70,12 +70,12 @@ endif
 " Teardown {{{1
 
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', 'exe')
-    \.."
+    \..'
     \ | setl cc<
     \
-    \ | exe 'nunmap <buffer> <c-s>'
-    \ | exe 'nunmap <buffer> [m'
-    \ | exe 'nunmap <buffer> ]m'
-    \ | exe 'nunmap <buffer> dm'
-    \ "
+    \ | exe "nunmap <buffer> <c-s>"
+    \ | exe "nunmap <buffer> [m"
+    \ | exe "nunmap <buffer> ]m"
+    \ | exe "nunmap <buffer> dm"
+    \ '
 

@@ -63,7 +63,7 @@ fu gitcommit#save_next_message(when) abort "{{{2
         sil! au! my_commit_msg_save * <buffer>
 
         call cursor(1,1)
-        let msg_last_line = search('\S\_s*\n'..s:PAT, 'n')
+        let msg_last_line = search('\S\_s*\n'..s:PAT, 'nW')
         if msg_last_line
             let msg = getline(1, msg_last_line)
             let md5 = s:get_md5(msg)

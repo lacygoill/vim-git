@@ -75,6 +75,15 @@ fu gitcommit#save_next_message(when) abort "{{{2
         call s:maybe_remove_oldest_msgfile()
     endif
 endfu
+
+fu gitcommit#undo_ftplugin() abort "{{{2
+    setl cc<
+
+    nunmap <buffer> <c-s>
+    nunmap <buffer> [m
+    nunmap <buffer> ]m
+    nunmap <buffer> dm
+endfu
 " }}}1
 " Core {{{1
 fu s:maybe_remove_oldest_msgfile() abort "{{{2

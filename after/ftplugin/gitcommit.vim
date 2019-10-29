@@ -70,12 +70,5 @@ endif
 " Teardown {{{1
 
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', 'exe')
-    \..'
-    \ | setl cc<
-    \
-    \ | exe "nunmap <buffer> <c-s>"
-    \ | exe "nunmap <buffer> [m"
-    \ | exe "nunmap <buffer> ]m"
-    \ | exe "nunmap <buffer> dm"
-    \ '
+    \..'| call gitcommit#undo_ftplugin()'
 

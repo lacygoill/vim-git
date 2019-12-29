@@ -22,7 +22,7 @@ setl cc=+1
 "
 " To save a buffer, we use a mapping like this:
 "
-"     nno  <silent>  <c-s>  :call Func()<cr>
+"     nno <silent> <c-s> :call Func()<cr>
 "     fu Func()
 "         sil update
 "     endfu

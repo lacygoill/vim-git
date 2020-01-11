@@ -57,15 +57,13 @@ nno <buffer><nowait><silent> [m :<c-u>call gitcommit#read_message(-1)<cr>
 nno <buffer><nowait><silent> ]m :<c-u>call gitcommit#read_message(+1)<cr>
 nno <buffer><nowait><silent> dm :<c-u>call gitcommit#delete_current_message()<cr>
 
-if stridx(&rtp, 'vim-lg-lib') >= 0
-    call lg#motion#repeatable#make#all({
-        \ 'mode': '',
-        \ 'buffer': 1,
-        \ 'from': expand('<sfile>:p')..':'..expand('<slnum>'),
-        \ 'motions': [
-        \     {'bwd': '[m',  'fwd': ']m'},
-        \ ]})
-endif
+sil! call lg#motion#repeatable#make#all({
+    \ 'mode': '',
+    \ 'buffer': 1,
+    \ 'from': expand('<sfile>:p')..':'..expand('<slnum>'),
+    \ 'motions': [
+    \     {'bwd': '[m',  'fwd': ']m'},
+    \ ]})
 
 " Teardown {{{1
 

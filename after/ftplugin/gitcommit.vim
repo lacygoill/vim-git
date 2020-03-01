@@ -57,7 +57,7 @@ nno <buffer><nowait><silent> [m :<c-u>call gitcommit#read_message(-1)<cr>
 nno <buffer><nowait><silent> ]m :<c-u>call gitcommit#read_message(+1)<cr>
 nno <buffer><nowait><silent> dm :<c-u>call gitcommit#delete_current_message()<cr>
 
-sil! call lg#motion#repeatable#make#all({
+sil! call repmap#make#all({
     \ 'mode': '',
     \ 'buffer': 1,
     \ 'from': expand('<sfile>:p')..':'..expand('<slnum>'),

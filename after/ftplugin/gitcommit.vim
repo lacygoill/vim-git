@@ -1,4 +1,4 @@
-if fnamemodify(expand('%:p'), ':t') is# 'COMMIT_EDITMSG'
+if fnamemodify(expand('<afile>:p'), ':t') is# 'COMMIT_EDITMSG'
     if empty(getline(1))
         call gitcommit#read_message()
     endif

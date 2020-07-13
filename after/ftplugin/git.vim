@@ -9,7 +9,7 @@
 " It  would   cause  a  gitcommit  buffer   to  be  folded,  which   would  make
 " `gitcommit#read_message()` initially remove more lines than intended:
 "
-"     sil! exe '1;/^'..s:PAT..'/-d_'
+"     sil! exe 'keepj 1;/^'..s:PAT..'/-d_'
 "
 " And now, because of that, when you  would cycle to another message, `:d` would
 " fail to remove the old message because `s:PAT` could not be found anymore.

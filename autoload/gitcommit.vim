@@ -37,7 +37,7 @@ fu gitcommit#read_message(...) abort "{{{2
     let g:GITCOMMIT_LAST_MSGFILE = msgfiles[idx]
 
     if filereadable(g:GITCOMMIT_LAST_MSGFILE)
-        sil! exe '1;/^'..s:PAT..'/-d_'
+        sil! exe 'keepj 1;/^'..s:PAT..'/-d_'
         if !&modifiable | setl modifiable | endif
         exe '0r '..g:GITCOMMIT_LAST_MSGFILE
         call append("']", '')

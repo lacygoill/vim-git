@@ -1,5 +1,5 @@
-if fnamemodify(expand('<afile>:p'), ':t') is# 'COMMIT_EDITMSG'
-    if empty(getline(1))
+if expand('<afile>:p')->fnamemodify(':t') is# 'COMMIT_EDITMSG'
+    if getline(1)->empty()
         call gitcommit#read_message()
     endif
     call gitcommit#save_next_message('on_bufwinleave')
@@ -60,13 +60,13 @@ nno <buffer><nowait><silent> dm :<c-u>call gitcommit#delete_current_message()<cr
 sil! call repmap#make#repeatable({
     \ 'mode': 'n',
     \ 'buffer': 1,
-    \ 'from': expand('<sfile>:p')..':'..expand('<slnum>'),
+    \ 'from': expand('<sfile>:p') .. ':' .. expand('<slnum>'),
     \ 'motions': [
-    \     {'bwd': '[m',  'fwd': ']m'},
+    \     {'bwd': '[m', 'fwd': ']m'},
     \ ]})
 
 " Teardown {{{1
 
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', 'exe')
-    \..'| call gitcommit#undo_ftplugin()'
+    \ .. '| call gitcommit#undo_ftplugin()'
 

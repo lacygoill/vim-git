@@ -77,7 +77,7 @@ fu gitcommit#save_next_message(when) abort "{{{2
 endfu
 
 fu gitcommit#undo_ftplugin() abort "{{{2
-    setl cc<
+    set cc<
 
     nunmap <buffer> <c-s>
     nunmap <buffer> [m

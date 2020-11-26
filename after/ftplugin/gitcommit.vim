@@ -18,31 +18,6 @@ setl cc=+1
 "
 " Source: https://github.com/tpope/vim-fugitive/issues/1076#issuecomment-412255667
 
-" Why?{{{
-"
-" To save a buffer, we use a mapping like this:
-"
-"     nno <silent> <c-s> :call Func()<cr>
-"     fu Func()
-"         sil update
-"     endfu
-"
-" Pb:
-"
-" For some reason, when we save, the current line becomes temporarily concealed.
-" It reappears after we move the cursor on a different line.
-" The problem seems to come from an interaction between:
-"
-"     :silent
-"     <silent>
-"     a git commit buffer
-"     vim-gutentags ? (not sure about this one)
-"
-" Solution:
-" Define a simpler buffer-local mapping which doesn't use `:silent`.
-"}}}
-nno <buffer><nowait><silent> <c-s> :<c-u>update<cr>
-
 " TODO: It would be nice to be able to fuzzy search through old commit messages.{{{
 "
 " Pressing `]m` and `[m`  can be ok if the message is right  before or after the
@@ -53,9 +28,9 @@ nno <buffer><nowait><silent> <c-s> :<c-u>update<cr>
 " This would  simplify the  code of  `gitcommit#read_message()` which  would not
 " accept an optional argument anymore.
 "}}}
-nno <buffer><nowait><silent> [m :<c-u>call gitcommit#read_message(-1)<cr>
-nno <buffer><nowait><silent> ]m :<c-u>call gitcommit#read_message(+1)<cr>
-nno <buffer><nowait><silent> dm :<c-u>call gitcommit#delete_current_message()<cr>
+nno <buffer><nowait> [m <cmd>call gitcommit#read_message(-1)<cr>
+nno <buffer><nowait> ]m <cmd>call gitcommit#read_message(+1)<cr>
+nno <buffer><nowait> dm <cmd>call gitcommit#delete_current_message()<cr>
 
 sil! call repmap#make#repeatable({
     \ 'mode': 'n',

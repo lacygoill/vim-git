@@ -49,7 +49,7 @@ endfu
 
 fu gitcommit#save_next_message(when) abort "{{{2
     if a:when is# 'on_bufwinleave'
-        augroup my_commit_msg_save
+        augroup MyCommitMsgSave
             au! * <buffer>
             au BufWinLeave <buffer> call gitcommit#save_next_message('now')
         augroup END
@@ -60,7 +60,7 @@ fu gitcommit#save_next_message(when) abort "{{{2
         " statements would not be processed.
         " We want our autocmd to be cleared no matter what.
         "}}}
-        sil! au! my_commit_msg_save * <buffer>
+        sil! au! MyCommitMsgSave * <buffer>
 
         call cursor(1, 1)
         let msg_last_line = search('\S\_s*\n' .. s:PAT, 'nW')

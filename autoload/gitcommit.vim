@@ -6,7 +6,7 @@ let g:autoloaded_gitcommit = 1
 " Interface {{{1
 fu gitcommit#delete_current_message(...) abort "{{{2
     if !exists('g:GITCOMMIT_LAST_MSGFILE') | return | endif
-    let msgfiles = glob($COMMIT_MESSAGES_DIR .. '/*.txt', 0, 1)
+    let msgfiles = glob($COMMIT_MESSAGES_DIR .. '/*.txt', v:false, v:true)
     if index(msgfiles, g:GITCOMMIT_LAST_MSGFILE) == -1 | return | endif
 
     let fname = g:GITCOMMIT_LAST_MSGFILE
@@ -21,7 +21,7 @@ fu gitcommit#delete_current_message(...) abort "{{{2
 endfu
 
 fu gitcommit#read_message(...) abort "{{{2
-    let msgfiles = glob($COMMIT_MESSAGES_DIR .. '/*.txt', 0, 1)
+    let msgfiles = glob($COMMIT_MESSAGES_DIR .. '/*.txt', v:false, v:true)
     if empty(msgfiles) | return | endif
 
     if !exists('g:GITCOMMIT_LAST_MSGFILE')
@@ -87,7 +87,7 @@ endfu
 " }}}1
 " Core {{{1
 fu s:maybe_remove_oldest_msgfile() abort "{{{2
-    let msgfiles = glob($COMMIT_MESSAGES_DIR .. '/*.txt', 0, 1)
+    let msgfiles = glob($COMMIT_MESSAGES_DIR .. '/*.txt', v:false, v:true)
     if len(msgfiles) > s:MAX_MESSAGES
         let oldest = msgfiles[0]
         call delete(oldest)
@@ -119,7 +119,7 @@ fu s:get_md5(msg) abort "{{{2
 endfu
 
 fu s:create_checksum_file() abort "{{{2
-    for file in glob($COMMIT_MESSAGES_DIR .. '/*.txt', 0, 1)
+    for file in glob($COMMIT_MESSAGES_DIR .. '/*.txt', v:false, v:true)
         let msg = readfile(file)
         let md5 = s:get_md5(msg)
         let file = fnamemodify(file, ':t')

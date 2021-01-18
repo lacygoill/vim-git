@@ -1,8 +1,8 @@
 if expand('<afile>:p')->fnamemodify(':t') is# 'COMMIT_EDITMSG'
     if getline(1)->empty()
-        call gitcommit#read_message()
+        call gitcommit#readMessage()
     endif
-    call gitcommit#save_next_message('on_bufwinleave')
+    call gitcommit#saveNextMessage('on_bufwinleave')
 endif
 
 " Options {{{1
@@ -25,16 +25,16 @@ setl cc=+1
 " But otherwise, it can be tedious to find the desired message.
 "
 " Once you do implement the fuzzy search, maybe get rid of `]m` and `[m`.
-" This would  simplify the  code of  `gitcommit#read_message()` which  would not
+" This would  simplify the  code of  `gitcommit#readMessage()` which  would not
 " accept an optional argument anymore.
 "}}}
-nno <buffer><nowait> [m <cmd>call gitcommit#read_message(-1)<cr>
-nno <buffer><nowait> ]m <cmd>call gitcommit#read_message(+1)<cr>
-nno <buffer><nowait> dm <cmd>call gitcommit#delete_current_message()<cr>
+nno <buffer><nowait> [m <cmd>call gitcommit#readMessage(-1)<cr>
+nno <buffer><nowait> ]m <cmd>call gitcommit#readMessage(+1)<cr>
+nno <buffer><nowait> dm <cmd>call gitcommit#deleteCurrentMessage()<cr>
 
 sil! call repmap#make#repeatable({
     \ 'mode': 'n',
-    \ 'buffer': 1,
+    \ 'buffer': v:true,
     \ 'from': expand('<sfile>:p') .. ':' .. expand('<slnum>'),
     \ 'motions': [
     \     {'bwd': '[m', 'fwd': ']m'},
@@ -43,5 +43,5 @@ sil! call repmap#make#repeatable({
 " Teardown {{{1
 
 let b:undo_ftplugin = get(b:, 'undo_ftplugin', 'exe')
-    \ .. '| call gitcommit#undo_ftplugin()'
+    \ .. '| call gitcommit#undoFtplugin()'
 

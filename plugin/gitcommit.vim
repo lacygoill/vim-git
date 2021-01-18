@@ -1,10 +1,10 @@
-if exists('g:loaded_gitcommit')
-    finish
-endif
-let g:loaded_gitcommit = 1
+vim9 noclear
 
-call setenv('COMMIT_MESSAGES_DIR', $HOME .. '/.vim/tmp/gitcommit_messages')
+if exists('loaded') | finish | endif
+var loaded = true
+
+setenv('COMMIT_MESSAGES_DIR', $HOME .. '/.vim/tmp/gitcommit_messages')
 if !isdirectory($COMMIT_MESSAGES_DIR)
-    call mkdir($COMMIT_MESSAGES_DIR, 'p', 0700)
+    mkdir($COMMIT_MESSAGES_DIR, 'p', 0o700)
 endif
 

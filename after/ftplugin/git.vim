@@ -7,7 +7,7 @@
 " Why should I *not* return `1` instead of `'='`?{{{
 "
 " It  would   cause  a  gitcommit  buffer   to  be  folded,  which   would  make
-" `gitcommit#read_message()` initially remove more lines than intended:
+" `gitcommit#readMessage()` initially remove more lines than intended:
 "
 "     sil! exe 'keepj 1;/^' .. s:PAT .. '/-d_'
 "

@@ -9,10 +9,10 @@
 " It  would   cause  a  gitcommit  buffer   to  be  folded,  which   would  make
 " `gitcommit#readMessage()` initially remove more lines than intended:
 "
-"     sil! exe 'keepj 1;/^' .. s:PAT .. '/-d_'
+"     sil! exe 'keepj :1;/^' .. PAT .. '/-d _'
 "
 " And now, because of that, when you  would cycle to another message, `:d` would
-" fail to remove the old message because `s:PAT` could not be found anymore.
+" fail to remove the old message because `PAT` could not be found anymore.
 " As  a result,  every time  you would  cycle to  another message,  it would  be
 " *appended* to the existing message(s) instead of replacing it/them.
 "}}}

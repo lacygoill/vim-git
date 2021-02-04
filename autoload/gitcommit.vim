@@ -35,7 +35,7 @@ def gitcommit#readMessage(offset = 0) #{{{2
         idx = -1
     elseif offset != 0
         idx = index(msgfiles, g:GITCOMMIT_LAST_MSGFILE)
-        if idx != -1
+        if idx >= 0
             idx = (idx + offset) % len(msgfiles)
         endif
     else
@@ -73,7 +73,7 @@ def gitcommit#saveNextMessage(when: string) #{{{2
 
         cursor(1, 1)
         var msg_last_line: number = search('\S\_s*\n' .. PAT, 'nW')
-        if msg_last_line != 0
+        if msg_last_line > 0
             var msg: list<string> = getline(1, msg_last_line)
             var md5: string = GetMd5(msg)
             # save the message in a file if it has never been saved

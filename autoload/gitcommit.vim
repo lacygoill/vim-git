@@ -79,6 +79,7 @@ def gitcommit#saveNextMessage(when: string) #{{{2
             # save the message in a file if it has never been saved
             if readfile(CHECKSUM_FILE)->match('\m\C^' .. md5 .. '  ') == -1
                 Write(msg, md5)
+                g:GITCOMMIT_LAST_MSGFILE = -1
             endif
         endif
         MaybeRemoveOldestMsgfile()

@@ -106,9 +106,10 @@ enddef
 
 def UpdateChecksumFile(arg_fname: string) #{{{2
     var fname: string = fnamemodify(arg_fname, ':t')
-    var new_checksums: list<string> = readfile(CHECKSUM_FILE)
-    filter(new_checksums, (_, v) => v !~ '\m\C  ' .. fname .. '$')
-    writefile(new_checksums, CHECKSUM_FILE)
+    var new_checksums: list<string> = CHECKSUM_FILE
+        ->readfile()
+        ->filter((_, v: string): bool => v !~ '\m\C  ' .. fname .. '$')
+        ->writefile(CHECKSUM_FILE)
 enddef
 
 def Write(msg: list<string>, md5: string) #{{{2

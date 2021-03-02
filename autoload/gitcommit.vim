@@ -77,7 +77,7 @@ def gitcommit#saveNextMessage(when: string) #{{{2
             var msg: list<string> = getline(1, msg_last_line)
             var md5: string = GetMd5(msg)
             # save the message in a file if it has never been saved
-            if readfile(CHECKSUM_FILE)->match('\m\C^' .. md5 .. '  ') == -1
+            if readfile(CHECKSUM_FILE)->match('^\C' .. md5 .. '  ') == -1
                 Write(msg, md5)
                 g:GITCOMMIT_LAST_MSGFILE = -1
             endif
@@ -108,7 +108,7 @@ def UpdateChecksumFile(arg_fname: string) #{{{2
     var fname: string = fnamemodify(arg_fname, ':t')
     var new_checksums: list<string> = CHECKSUM_FILE
         ->readfile()
-        ->filter((_, v: string): bool => v !~ '\m\C  ' .. fname .. '$')
+        ->filter((_, v: string): bool => v !~ '\C  ' .. fname .. '$')
         ->writefile(CHECKSUM_FILE)
 enddef
 

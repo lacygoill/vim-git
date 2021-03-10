@@ -8,8 +8,7 @@ def gitcommit#deleteCurrentMessage() #{{{2
     if !exists('g:GITCOMMIT_LAST_MSGFILE')
         return
     endif
-    var msgfiles: list<string> = glob($COMMIT_MESSAGES_DIR .. '/*.txt', false, true)
-    if index(msgfiles, g:GITCOMMIT_LAST_MSGFILE) == -1
+    if GetMsgfiles()->index(g:GITCOMMIT_LAST_MSGFILE) == -1
         return
     endif
 
@@ -25,7 +24,7 @@ def gitcommit#deleteCurrentMessage() #{{{2
 enddef
 
 def gitcommit#readMessage(offset = 0) #{{{2
-    var msgfiles: list<string> = glob($COMMIT_MESSAGES_DIR .. '/*.txt', false, true)
+    var msgfiles: list<string> = GetMsgfiles()
     if empty(msgfiles)
         return
     endif
@@ -97,7 +96,7 @@ enddef
 # }}}1
 # Core {{{1
 def MaybeRemoveOldestMsgfile() #{{{2
-    var msgfiles: list<string> = glob($COMMIT_MESSAGES_DIR .. '/*.txt', false, true)
+    var msgfiles: list<string> = GetMsgfiles()
     if len(msgfiles) > MAX_MESSAGES
         var oldest: string = msgfiles[0]
         delete(oldest)
@@ -122,6 +121,12 @@ def Write(msg: list<string>, md5: string) #{{{2
 enddef
 # }}}1
 # Utilities {{{1
+def GetMsgfiles(): list<string> #{{{2
+    return $COMMIT_MESSAGES_DIR
+        ->readdir((n: string): bool => n =~ '\.txt$')
+        ->map((_, v: string): string => $COMMIT_MESSAGES_DIR .. '/' .. v)
+enddef
+
 def GetMd5(msg: list<string>): string #{{{2
     sil return ('md5sum <<< ' .. join(msg, "\n")->string())
         ->system()
@@ -129,7 +134,7 @@ def GetMd5(msg: list<string>): string #{{{2
 enddef
 
 def CreateChecksumFile() #{{{2
-    for file in glob($COMMIT_MESSAGES_DIR .. '/*.txt', false, true)
+    for file in GetMsgfiles()
         var msg: list<string> = readfile(file)
         var md5: string = GetMd5(msg)
         var file: string = fnamemodify(file, ':t')

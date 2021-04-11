@@ -128,7 +128,7 @@ def GetMsgfiles(): list<string> #{{{2
 enddef
 
 def GetMd5(msg: list<string>): string #{{{2
-    sil return ('md5sum <<< ' .. join(msg, "\n")->string())
+    sil return ('md5sum <<< ' .. msg->join("\n")->string())
         ->system()
         ->matchstr('[a-f0-9]*')
 enddef

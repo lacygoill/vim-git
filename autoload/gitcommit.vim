@@ -137,8 +137,8 @@ def CreateChecksumFile() #{{{2
     for file in GetMsgfiles()
         var msg: list<string> = readfile(file)
         var md5: string = GetMd5(msg)
-        var file: string = fnamemodify(file, ':t')
-        writefile([md5 .. '  ' .. file], CHECKSUM_FILE, 'a')
+        var m: string = md5 .. '  ' .. fnamemodify(file, ':t')
+        writefile([m], CHECKSUM_FILE, 'a')
     endfor
 enddef
 #}}}1

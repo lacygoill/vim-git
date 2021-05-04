@@ -43,7 +43,7 @@ def gitcommit#readMessage(offset = 0) #{{{2
     g:GITCOMMIT_LAST_MSGFILE = msgfiles[idx]
 
     if filereadable(g:GITCOMMIT_LAST_MSGFILE)
-        sil! exe 'keepj :1;/^' .. PAT .. '/-d _'
+        exe 'sil! keepj :1;/^' .. PAT .. '/-d _'
         if !&modifiable
             setl modifiable
         endif
@@ -56,7 +56,7 @@ def gitcommit#readMessage(offset = 0) #{{{2
 enddef
 
 def gitcommit#saveNextMessage(when: string) #{{{2
-    if when == 'on_bufwinleave'
+    if when == 'on_BufWinLeave'
         augroup MyCommitMsgSave
             au! * <buffer>
             au BufWinLeave <buffer> gitcommit#saveNextMessage('now')
@@ -64,11 +64,10 @@ def gitcommit#saveNextMessage(when: string) #{{{2
     else
         # Leave this statement at the very beginning.{{{
         #
-        # If an error occurred in the function,  because of `abort`, the rest of the
-        # statements would not be processed.
-        # We want our autocmd to be cleared no matter what.
+        # If an error occurred in the function, the rest of the statements would
+        # not be processed.  We want our autocmd to be cleared no matter what.
         #}}}
-        sil! au! MyCommitMsgSave * <buffer>
+        sil! au! MyCommitMsgSave * <buffer=abuf>
 
         cursor(1, 1)
         var msg_last_line: number = search('\S\_s*\n' .. PAT, 'nW')
@@ -104,7 +103,7 @@ def MaybeRemoveOldestMsgfile() #{{{2
 enddef
 
 def UpdateChecksumFile(arg_fname: string) #{{{2
-    var fname: string = fnamemodify(arg_fname, ':t')
+    var fname: string = arg_fname->fnamemodify(':t')
     var new_checksums: list<string> = CHECKSUM_FILE
         ->readfile()
         ->filter((_, v: string): bool => v !~ '\C  ' .. fname .. '$')
@@ -117,7 +116,7 @@ def Write(msg: list<string>, md5: string) #{{{2
     # save message in a file
     writefile(msg, file)
     # update checksum file
-    writefile([md5 .. '  ' .. fnamemodify(file, ':t')], CHECKSUM_FILE, 'a')
+    writefile([md5 .. '  ' .. file->fnamemodify(':t')], CHECKSUM_FILE, 'a')
 enddef
 # }}}1
 # Utilities {{{1
@@ -137,7 +136,7 @@ def CreateChecksumFile() #{{{2
     for file in GetMsgfiles()
         var msg: list<string> = readfile(file)
         var md5: string = GetMd5(msg)
-        var m: string = md5 .. '  ' .. fnamemodify(file, ':t')
+        var m: string = md5 .. '  ' .. file->fnamemodify(':t')
         writefile([m], CHECKSUM_FILE, 'a')
     endfor
 enddef

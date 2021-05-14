@@ -2,7 +2,7 @@ if expand('<afile>:p')->fnamemodify(':t') is# 'COMMIT_EDITMSG'
     if getline(1)->empty()
         call gitcommit#readMessage()
     endif
-    call gitcommit#saveNextMessage('on_bufwinleave')
+    call gitcommit#saveNextMessage('on_BufWinLeave')
 endif
 
 " Options {{{1

@@ -56,7 +56,7 @@ def gitcommit#readMessage(offset = 0) #{{{2
 enddef
 
 def gitcommit#saveNextMessage(when: string) #{{{2
-    if when == 'on_BufWinLeave'
+    if when =~ '\cBufWinLeave'
         augroup MyCommitMsgSave
             au! * <buffer>
             au BufWinLeave <buffer> gitcommit#saveNextMessage('now')
@@ -133,10 +133,13 @@ def GetMd5(msg: list<string>): string #{{{2
 enddef
 
 def CreateChecksumFile() #{{{2
+    # create the file
+    writefile([], CHECKSUM_FILE)
     for file in GetMsgfiles()
         var msg: list<string> = readfile(file)
         var md5: string = GetMd5(msg)
         var m: string = md5 .. '  ' .. file->fnamemodify(':t')
+        # append a line in the file for each past git commit message
         writefile([m], CHECKSUM_FILE, 'a')
     endfor
 enddef

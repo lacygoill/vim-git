@@ -1,4 +1,6 @@
-" define the `gitconfigTodo` syntax group
+vim9script
+
+# define the `gitconfigTodo` syntax group
 syn keyword gitconfigTodo contained FIXME TODO XXX
 hi def link gitconfigTodo Todo
 

@@ -45,7 +45,7 @@ def gitcommit#readMessage(offset = 0) #{{{2
     if filereadable(g:GITCOMMIT_LAST_MSGFILE)
         exe 'sil! keepj :1;/^' .. PAT .. '/-d _'
         if !&modifiable
-            setl modifiable
+            &l:modifiable = true
         endif
         exe ':0r ' .. g:GITCOMMIT_LAST_MSGFILE
         append("']", '')
@@ -85,7 +85,7 @@ def gitcommit#saveNextMessage(when: string) #{{{2
 enddef
 
 def gitcommit#undoFtplugin() #{{{2
-    set cc<
+    set colorcolumn<
 
     nunmap <buffer> <c-s>
     nunmap <buffer> [m

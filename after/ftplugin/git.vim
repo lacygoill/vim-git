@@ -11,7 +11,7 @@ vim9script
 # It  would   cause  a  gitcommit  buffer   to  be  folded,  which   would  make
 # `gitcommit#readMessage()` initially remove more lines than intended:
 #
-#     exe 'sil! keepj :1;/^' .. PAT .. '/-d _'
+#     exe 'sil! keepj :1;/^' .. PAT .. '/- d _'
 #
 # And now, because of that, when you  would cycle to another message, `:d` would
 # fail to remove the old message because `PAT` could not be found anymore.

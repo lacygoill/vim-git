@@ -43,7 +43,7 @@ def gitcommit#readMessage(offset = 0) #{{{2
     g:GITCOMMIT_LAST_MSGFILE = msgfiles[idx]
 
     if filereadable(g:GITCOMMIT_LAST_MSGFILE)
-        exe 'sil! keepj :1;/^' .. PAT .. '/-d _'
+        exe 'sil! keepj :1;/^' .. PAT .. '/- d _'
         if !&modifiable
             &l:modifiable = true
         endif

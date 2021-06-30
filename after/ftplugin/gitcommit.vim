@@ -30,11 +30,11 @@ endif
 # This would  simplify the  code of  `gitcommit#readMessage()` which  would not
 # accept an optional argument anymore.
 #}}}
-nno <buffer><nowait> [m <cmd>call gitcommit#readMessage(-1)<cr>
-nno <buffer><nowait> ]m <cmd>call gitcommit#readMessage(+1)<cr>
-nno <buffer><nowait> dm <cmd>call gitcommit#deleteCurrentMessage()<cr>
+nnoremap <buffer><nowait> [m <Cmd>call gitcommit#readMessage(-1)<CR>
+nnoremap <buffer><nowait> ]m <Cmd>call gitcommit#readMessage(+1)<CR>
+nnoremap <buffer><nowait> dm <Cmd>call gitcommit#deleteCurrentMessage()<CR>
 
-sil! repmap#make#repeatable({
+silent! repmap#make#repeatable({
     'mode': 'n',
     'buffer': true,
     'from': expand('<sfile>:p') .. ':' .. expand('<slnum>'),
@@ -44,6 +44,6 @@ sil! repmap#make#repeatable({
 
 # Teardown {{{1
 
-b:undo_ftplugin = get(b:, 'undo_ftplugin', 'exe')
+b:undo_ftplugin = get(b:, 'undo_ftplugin', 'execute')
     .. '| call gitcommit#undoFtplugin()'
 

@@ -43,23 +43,23 @@ def gitcommit#readMessage(offset = 0) #{{{2
     g:GITCOMMIT_LAST_MSGFILE = msgfiles[idx]
 
     if filereadable(g:GITCOMMIT_LAST_MSGFILE)
-        exe 'sil! keepj :1;/^' .. PAT .. '/- d _'
+        execute 'silent! keepjumps :1;/^' .. PAT .. '/-1 delete _'
         if !&modifiable
             &l:modifiable = true
         endif
-        exe ':0r ' .. g:GITCOMMIT_LAST_MSGFILE
+        execute ':0 read ' .. g:GITCOMMIT_LAST_MSGFILE
         append("']", '')
         # need to write,  otherwise if we just execute `:x`,  git doesn't commit
         # because, for some reason, it thinks we didn't write anything
-        sil w
+        silent write
     endif
 enddef
 
 def gitcommit#saveNextMessage(when: string) #{{{2
     if when =~ '\cBufWinLeave'
         augroup MyCommitMsgSave
-            au! * <buffer>
-            au BufWinLeave <buffer> gitcommit#saveNextMessage('now')
+            autocmd! * <buffer>
+            autocmd BufWinLeave <buffer> gitcommit#saveNextMessage('now')
         augroup END
     else
         # Leave this statement at the very beginning.{{{
@@ -67,7 +67,7 @@ def gitcommit#saveNextMessage(when: string) #{{{2
         # If an error occurred in the function, the rest of the statements would
         # not be processed.  We want our autocmd to be cleared no matter what.
         #}}}
-        sil! au! MyCommitMsgSave * <buffer=abuf>
+        silent! autocmd! MyCommitMsgSave * <buffer=abuf>
 
         cursor(1, 1)
         var msg_last_line: number = search('\S\_s*\n' .. PAT, 'nW')
@@ -87,7 +87,7 @@ enddef
 def gitcommit#undoFtplugin() #{{{2
     set colorcolumn<
 
-    nunmap <buffer> <c-s>
+    nunmap <buffer> <C-S>
     nunmap <buffer> [m
     nunmap <buffer> ]m
     nunmap <buffer> dm
@@ -127,7 +127,7 @@ def GetMsgfiles(): list<string> #{{{2
 enddef
 
 def GetMd5(msg: list<string>): string #{{{2
-    sil return ('md5sum <<< ' .. msg->join("\n")->string())
+    silent return ('md5sum <<< ' .. msg->join("\n")->string())
         ->system()
         ->matchstr('[a-f0-9]*')
 enddef

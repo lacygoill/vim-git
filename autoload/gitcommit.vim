@@ -1,8 +1,5 @@
 vim9script noclear
 
-if exists('loaded') | finish | endif
-var loaded = true
-
 # Interface {{{1
 def gitcommit#deleteCurrentMessage() #{{{2
     if !exists('g:GITCOMMIT_LAST_MSGFILE')
@@ -123,7 +120,7 @@ enddef
 def GetMsgfiles(): list<string> #{{{2
     return $COMMIT_MESSAGES_DIR
         ->readdir((n: string): bool => n =~ '\.txt$')
-        ->map((_, v: string): string => $COMMIT_MESSAGES_DIR .. '/' .. v)
+        ->map((_, v: string) => $COMMIT_MESSAGES_DIR .. '/' .. v)
 enddef
 
 def GetMd5(msg: list<string>): string #{{{2

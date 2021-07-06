@@ -4,7 +4,7 @@ if expand('<afile>:p')->fnamemodify(':t') == 'COMMIT_EDITMSG'
     if getline(1)->empty()
         gitcommit#readMessage()
     endif
-    gitcommit#saveNextMessage('on_BufWinLeave')
+    gitcommit#saveNextMessage('OnBufWinLeave')
 endif
 
 # Options {{{1
@@ -30,17 +30,14 @@ endif
 # This would  simplify the  code of  `gitcommit#readMessage()` which  would not
 # accept an optional argument anymore.
 #}}}
-nnoremap <buffer><nowait> [m <Cmd>call gitcommit#readMessage(-1)<CR>
-nnoremap <buffer><nowait> ]m <Cmd>call gitcommit#readMessage(+1)<CR>
-nnoremap <buffer><nowait> dm <Cmd>call gitcommit#deleteCurrentMessage()<CR>
+nmap <buffer><nowait> ]m <Plug>(read-next-message)
+nmap <buffer><nowait> [m <Plug>(read-previous-message)
+nnoremap <buffer> <Plug>(read-next-message) <Cmd>call gitcommit#readMessage(+1)<CR>
+nnoremap <buffer> <Plug>(read-previous-message) <Cmd>call gitcommit#readMessage(-1)<CR>
+silent! submode#enter('read-other-message', 'n', 'br', ']m', '<Plug>(read-next-message)')
+silent! submode#enter('read-other-message', 'n', 'br', '[m', '<Plug>(read-previous-message)')
 
-silent! repmap#make#repeatable({
-    'mode': 'n',
-    'buffer': true,
-    'from': expand('<sfile>:p') .. ':' .. expand('<slnum>'),
-    'motions': [
-        {'bwd': '[m', 'fwd': ']m'},
-]})
+nnoremap <buffer><nowait> dm <Cmd>call gitcommit#deleteCurrentMessage()<CR>
 
 # Teardown {{{1
 

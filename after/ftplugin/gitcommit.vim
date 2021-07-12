@@ -34,8 +34,8 @@ nmap <buffer><nowait> ]m <Plug>(read-next-message)
 nmap <buffer><nowait> [m <Plug>(read-previous-message)
 nnoremap <buffer> <Plug>(read-next-message) <Cmd>call gitcommit#readMessage(+1)<CR>
 nnoremap <buffer> <Plug>(read-previous-message) <Cmd>call gitcommit#readMessage(-1)<CR>
-silent! submode#enter('read-other-message', 'n', 'br', ']m', '<Plug>(read-next-message)')
-silent! submode#enter('read-other-message', 'n', 'br', '[m', '<Plug>(read-previous-message)')
+silent! execute submode#enter('read-other-message', 'n', 'br', ']m', '<Plug>(read-next-message)')
+silent! execute submode#enter('read-other-message', 'n', 'br', '[m', '<Plug>(read-previous-message)')
 
 nnoremap <buffer><nowait> dm <Cmd>call gitcommit#deleteCurrentMessage()<CR>
 
